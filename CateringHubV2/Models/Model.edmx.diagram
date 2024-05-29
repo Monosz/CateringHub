@@ -4,6 +4,26 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
+      <Diagram DiagramId="98ae0baf278042eb9e0d444a55d530da" Name="Diagram1">
+        <EntityTypeShape EntityType="DatabaseModel.Location" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.RestaurantMenu" Width="1.5" PointX="5.25" PointY="2.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.Restaurant" Width="1.5" PointX="3" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.UserFavorite" Width="1.5" PointX="5.25" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DatabaseModel.User" Width="1.5" PointX="3" PointY="5.75" IsExpanded="true" />
+        <AssociationConnector Association="DatabaseModel.FK_Restaurants_ToLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_Users_ToLocations" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_RestaurantMenus_ToRestaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_UserFavorites_ToRestaurants" ManuallyRouted="false" />
+        <AssociationConnector Association="DatabaseModel.FK_UserFavorites_ToUsers" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="DatabaseModel.Cart" Width="1.5" PointX="7.5" PointY="6.5" />
+        <EntityTypeShape EntityType="DatabaseModel.TransactionHeader" Width="1.5" PointX="5.25" PointY="9.125" />
+        <EntityTypeShape EntityType="DatabaseModel.TransactionDetail" Width="1.5" PointX="7.5" PointY="3.125" />
+        <AssociationConnector Association="DatabaseModel.FK_Carts_ToRestaurantMenus" />
+        <AssociationConnector Association="DatabaseModel.FK_Carts_ToUsers" />
+        <AssociationConnector Association="DatabaseModel.FK_TransactionDetails_ToRestaurantMenus" />
+        <AssociationConnector Association="DatabaseModel.FK_TransactionHeaders_ToUsers" />
+        <AssociationConnector Association="DatabaseModel.FK_TransactionDetails_ToTransactionHeaders" />
+      </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

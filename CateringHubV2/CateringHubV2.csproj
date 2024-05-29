@@ -100,6 +100,9 @@
     <Compile Include="Factories\RestaurantMenuFactory.cs" />
     <Compile Include="Factories\UserFactory.cs" />
     <Compile Include="Factories\UserFavoriteFactory.cs" />
+    <Compile Include="Models\Cart.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\Location.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -122,6 +125,12 @@
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\RestaurantMenu.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TransactionDetail.cs">
+      <DependentUpon>Model.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\TransactionHeader.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\User.cs">

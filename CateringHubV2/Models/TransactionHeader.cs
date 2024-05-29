@@ -12,25 +12,20 @@ namespace CateringHubV2.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class RestaurantMenu
+    public partial class TransactionHeader
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public RestaurantMenu()
+        public TransactionHeader()
         {
-            this.Carts = new HashSet<Cart>();
             this.TransactionDetails = new HashSet<TransactionDetail>();
         }
     
-        public int RestaurantMenuId { get; set; }
-        public string MenuName { get; set; }
-        public string MenuImage { get; set; }
-        public double MenuCalorie { get; set; }
-        public bool MenuIsHalal { get; set; }
-        public int RestaurantId { get; set; }
+        public int TransactionId { get; set; }
+        public int UserId { get; set; }
+        public System.DateTime TransactionDate { get; set; }
+        public string Status { get; set; }
     
-        public virtual Restaurant Restaurant { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Cart> Carts { get; set; }
+        public virtual User User { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TransactionDetail> TransactionDetails { get; set; }
     }

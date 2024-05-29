@@ -4,7 +4,16 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="DatabaseModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Carts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RestaurantMenuId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="Locations">
           <Key>
             <PropertyRef Name="LocationId" />
@@ -37,6 +46,27 @@
           <Property Name="RestaurantRating" Type="float" Nullable="false" />
           <Property Name="RestaurantLocationId" Type="int" Nullable="false" />
         </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'D:\CODES\VISUAL STUDIO\CATERINGHUBV2\CATERINGHUBV2\APP_DATA\DATABASE.MDF.dbo.TransactionDetails' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TransactionDetails">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+            <PropertyRef Name="RestaurantMenuId" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="TransactionId" Type="int" Nullable="false" />
+          <Property Name="RestaurantMenuId" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransactionHeaders">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="TransactionDate" Type="date" Nullable="false" />
+          <Property Name="Status" Type="varchar" MaxLength="10" Nullable="false" />
+        </EntityType>
         <EntityType Name="UserFavorites">
           <Key>
             <PropertyRef Name="UserFavoriteId" />
@@ -55,6 +85,30 @@
           <Property Name="UserPassword" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="UserLocationId" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK_Carts_ToRestaurantMenus">
+          <End Role="RestaurantMenus" Type="Self.RestaurantMenus" Multiplicity="1" />
+          <End Role="Carts" Type="Self.Carts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurantMenus">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Principal>
+            <Dependent Role="Carts">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carts_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Carts" Type="Self.Carts" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Carts">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_RestaurantMenus_ToRestaurants">
           <End Role="Restaurants" Type="Self.Restaurants" Multiplicity="1" />
           <End Role="RestaurantMenus" Type="Self.RestaurantMenus" Multiplicity="*" />
@@ -76,6 +130,42 @@
             </Principal>
             <Dependent Role="Restaurants">
               <PropertyRef Name="RestaurantLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionDetails_ToRestaurantMenus">
+          <End Role="RestaurantMenus" Type="Self.RestaurantMenus" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurantMenus">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionDetails_ToTransactionHeaders">
+          <End Role="TransactionHeaders" Type="Self.TransactionHeaders" Multiplicity="1" />
+          <End Role="TransactionDetails" Type="Self.TransactionDetails" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionHeaders">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="TransactionDetails">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionHeaders_ToUsers">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="TransactionHeaders" Type="Self.TransactionHeaders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TransactionHeaders">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -116,11 +206,28 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DatabaseModelStoreContainer">
+          <EntitySet Name="Carts" EntityType="Self.Carts" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Locations" EntityType="Self.Locations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RestaurantMenus" EntityType="Self.RestaurantMenus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Restaurants" EntityType="Self.Restaurants" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionHeaders" EntityType="Self.TransactionHeaders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UserFavorites" EntityType="Self.UserFavorites" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransactionDetails" EntityType="Self.TransactionDetails" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TransactionDetails].[TransactionId] AS [TransactionId], 
+    [TransactionDetails].[RestaurantMenuId] AS [RestaurantMenuId], 
+    [TransactionDetails].[Quantity] AS [Quantity]
+    FROM [dbo].[TransactionDetails] AS [TransactionDetails]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Carts_ToRestaurantMenus" Association="Self.FK_Carts_ToRestaurantMenus">
+            <End Role="RestaurantMenus" EntitySet="RestaurantMenus" />
+            <End Role="Carts" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carts_ToUsers" Association="Self.FK_Carts_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Carts" EntitySet="Carts" />
+          </AssociationSet>
           <AssociationSet Name="FK_RestaurantMenus_ToRestaurants" Association="Self.FK_RestaurantMenus_ToRestaurants">
             <End Role="Restaurants" EntitySet="Restaurants" />
             <End Role="RestaurantMenus" EntitySet="RestaurantMenus" />
@@ -128,6 +235,18 @@
           <AssociationSet Name="FK_Restaurants_ToLocations" Association="Self.FK_Restaurants_ToLocations">
             <End Role="Locations" EntitySet="Locations" />
             <End Role="Restaurants" EntitySet="Restaurants" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionDetails_ToRestaurantMenus" Association="Self.FK_TransactionDetails_ToRestaurantMenus">
+            <End Role="RestaurantMenus" EntitySet="RestaurantMenus" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionDetails_ToTransactionHeaders" Association="Self.FK_TransactionDetails_ToTransactionHeaders">
+            <End Role="TransactionHeaders" EntitySet="TransactionHeaders" />
+            <End Role="TransactionDetails" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionHeaders_ToUsers" Association="Self.FK_TransactionHeaders_ToUsers">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="TransactionHeaders" EntitySet="TransactionHeaders" />
           </AssociationSet>
           <AssociationSet Name="FK_UserFavorites_ToRestaurants" Association="Self.FK_UserFavorites_ToRestaurants">
             <End Role="Restaurants" EntitySet="Restaurants" />
@@ -142,8 +261,7 @@
             <End Role="Users" EntitySet="Users" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DatabaseModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -171,6 +289,8 @@
           <Property Name="MenuIsHalal" Type="Boolean" Nullable="false" />
           <Property Name="RestaurantId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Restaurant" Relationship="Self.FK_RestaurantMenus_ToRestaurants" FromRole="RestaurantMenus" ToRole="Restaurants" />
+          <NavigationProperty Name="Carts" Relationship="DatabaseModel.FK_Carts_ToRestaurantMenus" FromRole="RestaurantMenu" ToRole="Cart" />
+          <NavigationProperty Name="TransactionDetails" Relationship="DatabaseModel.FK_TransactionDetails_ToRestaurantMenus" FromRole="RestaurantMenu" ToRole="TransactionDetail" />
         </EntityType>
         <EntityType Name="Restaurant">
           <Key>
@@ -206,6 +326,8 @@
           <Property Name="UserLocationId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Location" Relationship="Self.FK_Users_ToLocations" FromRole="Users" ToRole="Locations" />
           <NavigationProperty Name="UserFavorites" Relationship="Self.FK_UserFavorites_ToUsers" FromRole="Users" ToRole="UserFavorites" />
+          <NavigationProperty Name="Carts" Relationship="DatabaseModel.FK_Carts_ToUsers" FromRole="User" ToRole="Cart" />
+          <NavigationProperty Name="TransactionHeaders" Relationship="DatabaseModel.FK_TransactionHeaders_ToUsers" FromRole="User" ToRole="TransactionHeader" />
         </EntityType>
         <Association Name="FK_Restaurants_ToLocations">
           <End Role="Locations" Type="Self.Location" Multiplicity="1" />
@@ -293,7 +415,124 @@
             <End Role="Users" EntitySet="Users" />
             <End Role="UserFavorites" EntitySet="UserFavorites" />
           </AssociationSet>
+          <EntitySet Name="Carts" EntityType="DatabaseModel.Cart" />
+          <EntitySet Name="TransactionHeaders" EntityType="DatabaseModel.TransactionHeader" />
+          <EntitySet Name="TransactionDetails" EntityType="DatabaseModel.TransactionDetail" />
+          <AssociationSet Name="FK_Carts_ToRestaurantMenus" Association="DatabaseModel.FK_Carts_ToRestaurantMenus">
+            <End Role="RestaurantMenu" EntitySet="RestaurantMenus" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Carts_ToUsers" Association="DatabaseModel.FK_Carts_ToUsers">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Cart" EntitySet="Carts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionDetails_ToRestaurantMenus" Association="DatabaseModel.FK_TransactionDetails_ToRestaurantMenus">
+            <End Role="RestaurantMenu" EntitySet="RestaurantMenus" />
+            <End Role="TransactionDetail" EntitySet="TransactionDetails" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionHeaders_ToUsers" Association="DatabaseModel.FK_TransactionHeaders_ToUsers">
+            <End Role="User" EntitySet="Users" />
+            <End Role="TransactionHeader" EntitySet="TransactionHeaders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TransactionDetails_ToTransactionHeaders" Association="DatabaseModel.FK_TransactionDetails_ToTransactionHeaders">
+            <End Role="TransactionHeader" EntitySet="TransactionHeaders" />
+            <End Role="TransactionDetail" EntitySet="TransactionDetails" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="RestaurantMenuId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RestaurantMenu" Relationship="DatabaseModel.FK_Carts_ToRestaurantMenus" FromRole="Cart" ToRole="RestaurantMenu" />
+          <NavigationProperty Name="User" Relationship="DatabaseModel.FK_Carts_ToUsers" FromRole="Cart" ToRole="User" />
+        </EntityType>
+        <EntityType Name="TransactionHeader">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+          </Key>
+          <Property Name="TransactionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="TransactionDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="User" Relationship="DatabaseModel.FK_TransactionHeaders_ToUsers" FromRole="TransactionHeader" ToRole="User" />
+          <NavigationProperty Name="TransactionDetails" Relationship="DatabaseModel.FK_TransactionDetails_ToTransactionHeaders" FromRole="TransactionHeader" ToRole="TransactionDetail" />
+        </EntityType>
+        <EntityType Name="TransactionDetail">
+          <Key>
+            <PropertyRef Name="TransactionId" />
+            <PropertyRef Name="RestaurantMenuId" />
+            <PropertyRef Name="Quantity" />
+          </Key>
+          <Property Name="TransactionId" Type="Int32" Nullable="false" />
+          <Property Name="RestaurantMenuId" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="RestaurantMenu" Relationship="DatabaseModel.FK_TransactionDetails_ToRestaurantMenus" FromRole="TransactionDetail" ToRole="RestaurantMenu" />
+          <NavigationProperty Name="TransactionHeader" Relationship="DatabaseModel.FK_TransactionDetails_ToTransactionHeaders" FromRole="TransactionDetail" ToRole="TransactionHeader" />
+        </EntityType>
+        <Association Name="FK_Carts_ToRestaurantMenus">
+          <End Type="DatabaseModel.RestaurantMenu" Role="RestaurantMenu" Multiplicity="1" />
+          <End Type="DatabaseModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurantMenu">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Carts_ToUsers">
+          <End Type="DatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="DatabaseModel.Cart" Role="Cart" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Cart">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionDetails_ToRestaurantMenus">
+          <End Type="DatabaseModel.RestaurantMenu" Role="RestaurantMenu" Multiplicity="1" />
+          <End Type="DatabaseModel.TransactionDetail" Role="TransactionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RestaurantMenu">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Principal>
+            <Dependent Role="TransactionDetail">
+              <PropertyRef Name="RestaurantMenuId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionHeaders_ToUsers">
+          <End Type="DatabaseModel.User" Role="User" Multiplicity="1" />
+          <End Type="DatabaseModel.TransactionHeader" Role="TransactionHeader" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="TransactionHeader">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TransactionDetails_ToTransactionHeaders">
+          <End Type="DatabaseModel.TransactionHeader" Role="TransactionHeader" Multiplicity="1" />
+          <End Type="DatabaseModel.TransactionDetail" Role="TransactionDetail" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransactionHeader">
+              <PropertyRef Name="TransactionId" />
+            </Principal>
+            <Dependent Role="TransactionDetail">
+              <PropertyRef Name="TransactionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -352,6 +591,35 @@
                 <ScalarProperty Name="UserEmail" ColumnName="UserEmail" />
                 <ScalarProperty Name="UserPassword" ColumnName="UserPassword" />
                 <ScalarProperty Name="UserLocationId" ColumnName="UserLocationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="DatabaseModel.Cart">
+              <MappingFragment StoreEntitySet="Carts">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="RestaurantMenuId" ColumnName="RestaurantMenuId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionHeaders">
+            <EntityTypeMapping TypeName="DatabaseModel.TransactionHeader">
+              <MappingFragment StoreEntitySet="TransactionHeaders">
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TransactionDate" ColumnName="TransactionDate" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransactionDetails">
+            <EntityTypeMapping TypeName="DatabaseModel.TransactionDetail">
+              <MappingFragment StoreEntitySet="TransactionDetails">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="RestaurantMenuId" ColumnName="RestaurantMenuId" />
+                <ScalarProperty Name="TransactionId" ColumnName="TransactionId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

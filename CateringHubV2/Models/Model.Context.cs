@@ -30,5 +30,8 @@ namespace CateringHubV2.Models
         public virtual DbSet<Restaurant> Restaurants { get; set; }
         public virtual DbSet<UserFavorite> UserFavorites { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<TransactionHeader> TransactionHeaders { get; set; }
+        public virtual DbSet<TransactionDetail> TransactionDetails { get; set; }
     }
 }

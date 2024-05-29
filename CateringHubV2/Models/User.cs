@@ -18,6 +18,8 @@ namespace CateringHubV2.Models
         public User()
         {
             this.UserFavorites = new HashSet<UserFavorite>();
+            this.Carts = new HashSet<Cart>();
+            this.TransactionHeaders = new HashSet<TransactionHeader>();
         }
     
         public int UserId { get; set; }
@@ -29,5 +31,9 @@ namespace CateringHubV2.Models
         public virtual Location Location { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UserFavorite> UserFavorites { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Cart> Carts { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TransactionHeader> TransactionHeaders { get; set; }
     }
 }

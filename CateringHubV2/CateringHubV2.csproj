@@ -95,9 +95,12 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Factories\CartFactory.cs" />
     <Compile Include="Factories\LocationFactory.cs" />
     <Compile Include="Factories\RestaurantFactory.cs" />
     <Compile Include="Factories\RestaurantMenuFactory.cs" />
+    <Compile Include="Factories\TransactionDetailFactory.cs" />
+    <Compile Include="Factories\TransactionHeaderFactory.cs" />
     <Compile Include="Factories\UserFactory.cs" />
     <Compile Include="Factories\UserFavoriteFactory.cs" />
     <Compile Include="Models\Cart.cs">

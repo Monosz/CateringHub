@@ -14,7 +14,8 @@ namespace CateringHubV2.Factories
             {
                 UserName = username,
                 UserEmail = email,
-                UserPassword = password
+                UserPassword = password,
+                UserLocationId = 1 // Empty loc
             };
         }
     }

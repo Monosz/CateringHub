@@ -29,7 +29,7 @@
             <asp:TextBox ID="PasswordTxt" runat="server" TextMode="Password" placeholder="Password"></asp:TextBox>
             <div id="log-reg-password-error"></div>
 
-            <asp:Button ID="LoginBtn" runat="server" CssClass="login-btn" Text="Login" OnClick="LoginBtn_Click" />
+            <asp:Button ID="RegisterBtn" runat="server" CssClass="register-btn" Text="Register" OnClick="RegisterBtn_Click" />
         </form>
     <!-- FORM END -->
     

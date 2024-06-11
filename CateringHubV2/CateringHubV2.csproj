@@ -95,6 +95,7 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Factories\CartFactory.cs" />
     <Compile Include="Factories\LocationFactory.cs" />
     <Compile Include="Factories\RestaurantFactory.cs" />
@@ -103,6 +104,14 @@
     <Compile Include="Factories\TransactionHeaderFactory.cs" />
     <Compile Include="Factories\UserFactory.cs" />
     <Compile Include="Factories\UserFavoriteFactory.cs" />
+    <Compile Include="Handlers\CartHandler.cs" />
+    <Compile Include="Handlers\LocationHandler.cs" />
+    <Compile Include="Handlers\RestaurantHandler.cs" />
+    <Compile Include="Handlers\RestaurantMenuHandler.cs" />
+    <Compile Include="Handlers\TransactionDetailHandler.cs" />
+    <Compile Include="Handlers\TransactionHeaderHandler.cs" />
+    <Compile Include="Handlers\UserFavoriteHandler.cs" />
+    <Compile Include="Handlers\UserHandler.cs" />
     <Compile Include="Models\Cart.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
@@ -142,11 +151,14 @@
     <Compile Include="Models\UserFavorite.cs">
       <DependentUpon>Model.tt</DependentUpon>
     </Compile>
+    <Compile Include="Repositories\CartRepository.cs" />
     <Compile Include="Repositories\LocationRepository.cs" />
     <Compile Include="Repositories\RestaurantMenuRepository.cs" />
     <Compile Include="Repositories\RestaurantRepository.cs" />
     <Compile Include="Repositories\Singleton.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repositories\TransactionDetailRepository.cs" />
+    <Compile Include="Repositories\TransactionHeaderRepository.cs" />
     <Compile Include="Repositories\UserFavoriteRepository.cs" />
     <Compile Include="Repositories\UserRepository.cs" />
     <Compile Include="Views\Login.aspx.cs">
@@ -182,8 +194,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Assets\" />
-    <Folder Include="Controllers\" />
-    <Folder Include="Handlers\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

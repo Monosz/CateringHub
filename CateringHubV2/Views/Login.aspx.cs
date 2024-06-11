@@ -1,5 +1,5 @@
-﻿using CateringHubV2.Models;
-using CateringHubV2.Repositories;
+﻿using CateringHubV2.Controllers;
+using CateringHubV2.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,20 +18,20 @@ namespace CateringHubV2.Views
 
         protected void LoginBtn_Click(object sender, EventArgs e)
         {
-            return;
+            string email = EmailTxt.Text;
+            string password = PasswordTxt.Text;
 
-            String email = EmailTxt.Text;
-            String password = PasswordTxt.Text;
-
-            User u = UserRepository.FindUserByEmail(email);
-            if (u == null || u.UserPassword != password)
+            if (!UserController.ValidateLogin(email, password))
             {
+                // ErrorMsg?
                 return;
             }
 
-            Session["user"] = u;
+            User u = UserController.FindUserByEmail(email);
 
-            // Response.Redirect("~/Home.aspx");
+            Session["user"] = u.UserId;
+
+            Response.Redirect("~/Views/Home.aspx");
         }
     }
 }

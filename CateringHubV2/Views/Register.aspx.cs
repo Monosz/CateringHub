@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CateringHubV2.Controllers;
+using CateringHubV2.Factories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -14,15 +16,21 @@ namespace CateringHubV2.Views
 
         }
 
-        protected void LoginBtn_Click(object sender, EventArgs e)
+        protected void RegisterBtn_Click(object sender, EventArgs e)
         {
-            return;
-
             String name = NameTxt.Text;
             String email = EmailTxt.Text;
             String password = PasswordTxt.Text;
 
+            if (!UserController.ValidateRegister())
+            {
+                // ErrorMsg?
+                return;
+            }
 
+            UserController.AddUser(UserFactory.CreateUser(name, email, password));
+
+            Response.Redirect("~/Views/Login.aspx");
         }
     }
 }

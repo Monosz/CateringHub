@@ -26,15 +26,34 @@ namespace CateringHubV2.Repositories
             db.SaveChanges();
         }
 
-        public static void AddUserLocation(User user, string locationName)
+        public static void AddUserLocation(int id, string locationName)
         {
+            User user = FindUserById(id);
             user.UserLocationId = LocationRepository.FindLocationByName(locationName).LocationId;
             db.SaveChanges();
         }
 
-        public static void UpdateUser()
+        public static void UpdateUser(string name, string email, string password)
         {
+            User u = FindUserByEmail(email);
+            u.UserName = name;
+            u.UserEmail = email;
+            u.UserPassword = password;
             db.SaveChanges();
+        }
+
+        public static bool ValidateLogin(string email, string password)
+        {
+            User u = FindUserByEmail(email);
+            if (u == null)
+            {
+                return false;
+            }
+            else if (u.UserPassword != password)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
